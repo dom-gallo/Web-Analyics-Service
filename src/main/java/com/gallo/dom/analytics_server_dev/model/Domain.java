@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.List;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -35,6 +36,9 @@ public class Domain {
             mappedBy = "domain"
     )
     private User user;
+
+    @OneToMany(mappedBy = "domain")
+    private List<PageView> pageViewList;
 
     public Domain() {
     }
@@ -68,12 +72,21 @@ public class Domain {
         this.user = user;
     }
 
+    public List<PageView> getPageViewList() {
+        return pageViewList;
+    }
+
+    public void setPageViewList(List<PageView> pageViewList) {
+        this.pageViewList = pageViewList;
+    }
+
 //    @Override
 //    public String toString() {
 //        return "Domain{" +
 //                "id=" + id +
 //                ", domainBase='" + domainBase + '\'' +
 //                ", user=" + user +
+//                ", pageViewList=" + pageViewList +
 //                '}';
 //    }
 }
