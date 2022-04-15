@@ -1,4 +1,7 @@
 package com.gallo.dom.analytics_server_dev.model;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 /*
@@ -9,6 +12,9 @@ import java.time.LocalDateTime;
 
  */
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity(name = "User")
 // Set name of table in DB
 @Table(

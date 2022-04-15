@@ -1,8 +1,13 @@
 package com.gallo.dom.analytics_server_dev.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity(name = "Domain")
 @Table(name = "domain")
 public class Domain {

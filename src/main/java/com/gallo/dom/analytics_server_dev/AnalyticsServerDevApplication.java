@@ -31,7 +31,8 @@ public class AnalyticsServerDevApplication {
 		return args -> {
 
 			User myUser = new User("dgallo519@gmail.com", "password", LocalDateTime.now());
-
+			Domain aDomain = new Domain("test.com", myUser);
+			myUser.setDomain(aDomain);
 			userRepository.save(myUser);
 
 		};
