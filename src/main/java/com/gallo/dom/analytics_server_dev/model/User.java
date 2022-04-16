@@ -43,7 +43,8 @@ public class User {
 
     // add constraints later
     @Column(
-            name = "email_address"
+            name = "email_address",
+            unique = true
     )
     private String emailAddress;
 

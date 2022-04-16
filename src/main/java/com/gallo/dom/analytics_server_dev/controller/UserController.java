@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -26,9 +24,11 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity getUserByEmail(@RequestParam("email") String emailAddress){
-        Optional<User> user = userService.getUserByEmailAddress(emailAddress);
         logger.info(String.format("REQUEST FOR USER WITH EMAIL: %S", emailAddress));
+
+        User user = userService.getUserByEmail(emailAddress);
         System.out.println(user);
+
         return new ResponseEntity(user, HttpStatus.OK);
     }
 }

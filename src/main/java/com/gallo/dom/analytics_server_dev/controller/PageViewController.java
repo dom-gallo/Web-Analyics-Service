@@ -28,7 +28,8 @@ public class PageViewController {
 
     @GetMapping("")
     public ResponseEntity newPageView(@RequestParam("domainId") Long domainId, @RequestParam("url") String url){
-        if (pageViewService.addPageView(domainId,url) == 0)
+        boolean didSave = pageViewService.addPageView(domainId, url);
+        if (!didSave)
         {
             throw new NotFoundException("Cannot find pageviews for domain with id: " + domainId);
         }

@@ -1,5 +1,6 @@
 package com.gallo.dom.analytics_server_dev.service;
 
+import com.gallo.dom.analytics_server_dev.exception.NotFoundException;
 import com.gallo.dom.analytics_server_dev.model.User;
 import com.gallo.dom.analytics_server_dev.repository.UserRepository;
 import org.slf4j.Logger;
@@ -20,13 +21,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> getUserByEmailAddress(String emailAddress) {
+    public User getUserByEmail(String emailAddress){
         Optional<User> userOptional = userRepository.getUserByEmailAddress(emailAddress);
-        if (userOptional.isEmpty()){
-            // SEND BACK ERROR RESPONSE
-            logger.info("USER NOT FOUND IN DATABASE");
-            return null;
+        if (userOptional.isEmpty()) {
+            logger.warn("Request for user with email: " + emailAddress + " not found");
+            throw new NotFoundException("User not found for emailAddress = " + emailAddress);
         }
-        return userOptional;
+        logger.info("Found user with emailAddress = " + emailAddress);
+        return userOptional.get();
     }
 }

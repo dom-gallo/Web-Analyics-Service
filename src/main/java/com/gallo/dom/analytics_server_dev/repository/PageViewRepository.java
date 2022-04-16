@@ -15,4 +15,5 @@ public interface PageViewRepository extends JpaRepository<PageView, Long> {
 
     @Query("SELECT p FROM PageView p WHERE p.domain.id = ?1")
     List<PageView> getPageViewForDomainId(Long id) throws ApiRequestException;
+
 }
