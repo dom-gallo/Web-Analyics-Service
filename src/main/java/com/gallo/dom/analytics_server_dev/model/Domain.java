@@ -1,6 +1,7 @@
 package com.gallo.dom.analytics_server_dev.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -28,7 +29,8 @@ public class Domain {
     private Long id;
 
     @Column(
-            name = "domain_base"
+            name = "domain_base",
+            nullable = false
     )
     private String domainBase;
 

@@ -26,15 +26,15 @@ public class AnalyticsServerDevApplication {
 	}
 
 	// Testing for persistence layer
-	@Bean
-	CommandLineRunner commandLineRunner(UserRepository userRepository, DomainRepository domainRepository) {
-		return args -> {
-
-			User myUser = new User("dgallo519@gmail.com", "password", LocalDateTime.now());
-			Domain aDomain = new Domain("test.com", myUser);
-			myUser.setDomain(aDomain);
-			userRepository.save(myUser);
-
-		};
-	}
+//	@Bean
+//	CommandLineRunner commandLineRunner(UserRepository userRepository, DomainRepository domainRepository) {
+//		return args -> {
+//
+//			User myUser = new User("dgallo519@gmail.com", "password", LocalDateTime.now());
+//			Domain aDomain = new Domain("test.com", myUser);
+//			myUser.setDomain(aDomain);
+//			userRepository.save(myUser);
+//
+//		};
+//	}
 }

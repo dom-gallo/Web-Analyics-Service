@@ -1,5 +1,6 @@
 package com.gallo.dom.analytics_server_dev.controller;
 
+import com.gallo.dom.analytics_server_dev.exception.NotFoundException;
 import com.gallo.dom.analytics_server_dev.model.PageView;
 import com.gallo.dom.analytics_server_dev.service.DomainService;
 import com.gallo.dom.analytics_server_dev.service.PageViewService;
@@ -29,7 +30,7 @@ public class PageViewController {
     public ResponseEntity newPageView(@RequestParam("domainId") Long domainId, @RequestParam("url") String url){
         if (pageViewService.addPageView(domainId,url) == 0)
         {
-            return new ResponseEntity("NOT OK", HttpStatus.BAD_REQUEST);
+            throw new NotFoundException("Cannot find pageviews for domain with id: " + domainId);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
