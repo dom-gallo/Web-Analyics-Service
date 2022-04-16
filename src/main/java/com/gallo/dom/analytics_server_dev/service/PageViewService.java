@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PageViewService {
@@ -34,5 +35,9 @@ public class PageViewService {
         );
         pageViewRepository.save(newView);
         return 1;
+    }
+
+    public List<PageView> getPageViewsForDomainId(Long domainId){
+        return pageViewRepository.getPageViewForDomainId(domainId);
     }
 }

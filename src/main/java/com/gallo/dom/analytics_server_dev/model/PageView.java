@@ -1,6 +1,7 @@
 package com.gallo.dom.analytics_server_dev.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class PageView {
     )
     private String url_viewed;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "domain_id")
     private Domain domain;
@@ -49,6 +51,34 @@ public class PageView {
     public PageView(LocalDateTime viewedAt, String url_viewed, Domain domain) {
         this.viewedAt = viewedAt;
         this.url_viewed = url_viewed;
+        this.domain = domain;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getViewedAt() {
+        return viewedAt;
+    }
+
+    public void setViewedAt(LocalDateTime viewedAt) {
+        this.viewedAt = viewedAt;
+    }
+
+    public String getUrl_viewed() {
+        return url_viewed;
+    }
+
+    public void setUrl_viewed(String url_viewed) {
+        this.url_viewed = url_viewed;
+    }
+
+    public void setDomain(Domain domain) {
         this.domain = domain;
     }
 
