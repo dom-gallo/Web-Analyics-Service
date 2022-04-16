@@ -43,6 +43,15 @@ public class PageView {
         return domain;
     }
 
+    public PageView() {
+    }
+
+    public PageView(LocalDateTime viewedAt, String url_viewed, Domain domain) {
+        this.viewedAt = viewedAt;
+        this.url_viewed = url_viewed;
+        this.domain = domain;
+    }
+
     @Override
     public String toString() {
         return "PageView{" +
