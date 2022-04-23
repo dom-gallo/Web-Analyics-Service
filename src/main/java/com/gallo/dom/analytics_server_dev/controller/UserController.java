@@ -31,9 +31,8 @@ public class UserController {
     }
     @PostMapping("/signup")
     public void signUpUser(@RequestBody @NotNull User user){
-        System.out.println("Trying to sign up \n" + user.toString());
+        logger.info("Request to signup user with emailAddress="+user.getEmailAddress());
         User savedUser = userService.addNewUser(user);
-        System.out.println(savedUser.toString());
 //        return new ResponseEntity("OK", HttpStatus.OK);
 
     }

@@ -36,6 +36,7 @@ public class PageViewController {
         this.urlParser = urlParser;
     }
 
+
     @GetMapping("")
     public ResponseEntity newPageView(@RequestParam("domainId") Long domainId, @RequestParam("url") String url){
         if (domainId.equals(null)){
@@ -55,6 +56,8 @@ public class PageViewController {
         List<PageView> pageViews = pageViewService.getPageViewsForDomainId(domainId);
         return new ResponseEntity(pageViews, HttpStatus.OK);
     }
+
+
     @GetMapping("/new")
     public ResponseEntity addPageViewWithURL(@RequestParam("url") String url){
         logger.info("New page view for URL: " + url);

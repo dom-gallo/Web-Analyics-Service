@@ -6,6 +6,7 @@ import com.gallo.dom.analytics_server_dev.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,10 +18,12 @@ public class UserService {
     private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User getUserByEmail(String emailAddress){
@@ -35,6 +38,9 @@ public class UserService {
 
     public User addNewUser(User user){
         user.setCreated_at(LocalDateTime.now());
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        logger.info("Saving user to database with emailAddress="+user.getEmailAddress());
         return userRepository.save(user);
     }
 }
