@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DomainRepository extends JpaRepository<Domain, Long> {
+
     @Query("SELECT d FROM Domain d WHERE d.id = ?1")
     public Domain getDomainById(Long id);
 
