@@ -5,13 +5,17 @@ import com.gallo.dom.analytics_server_dev.model.Domain;
 import com.gallo.dom.analytics_server_dev.model.User;
 import com.gallo.dom.analytics_server_dev.repository.DomainRepository;
 import com.gallo.dom.analytics_server_dev.service.UserService;
+import io.jsonwebtoken.Claims;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 
@@ -41,5 +45,17 @@ public class UserController {
 
         User savedUser = userService.addNewUser(appUserRegisterRequest);
 
+    }
+    /*
+        Purpose: To provide all initial information to the web app for the currently logged in user
+
+     */
+    @GetMapping("/me")
+    public ResponseEntity getMe(HttpServletRequest request, Authentication auth){
+        // Pull the user emailAddress out of the security context authentication
+//        String lookingForEmailAddressHere = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Claims lookingForEmailAddressHere = (Claims) auth.getName().toString();
+        logger.info(String.format("LOOKING FOR CURRENTLY LOGGED IN USER INFORMATION: %s", lookingForEmailAddressHere));
+        return new ResponseEntity(lookingForEmailAddressHere, HttpStatus.OK);
     }
 }
