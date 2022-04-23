@@ -60,12 +60,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
-//        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-//        String emailAddress = loggedInUser.getName();
+
         logger.info("Inside successful authentication");
-//        System.out.print(authResult.getPrincipal().toString());
-//        User user = (User) authResult.getPrincipal();
-//        System.out.println(user.toString());
+
 
         Date exp = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
         Key key = Keys.hmacShaKeyFor(KEY.getBytes());
