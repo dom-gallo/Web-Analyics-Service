@@ -3,6 +3,7 @@ package com.gallo.dom.analytics_server_dev.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.gallo.dom.analytics_server_dev.model.requests.PageViewRequest;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ public class PageView {
     private String url_viewed;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "domain_id")
     private Domain domain;
 
@@ -47,7 +48,16 @@ public class PageView {
 
     public PageView() {
     }
-
+    public PageView(PageViewRequest pvr, User user) {
+        this.viewedAt = pvr.getTimeViewed();
+        this.domain = new Domain(pvr.getDomainBase(), user);
+        this.url_viewed = pvr.getPath();
+    }
+    public PageView(Domain d, String url){
+        this.viewedAt = LocalDateTime.now();
+        this.url_viewed = url;
+        this.domain = d;
+    }
     public PageView(LocalDateTime viewedAt, String url_viewed, Domain domain) {
         this.viewedAt = viewedAt;
         this.url_viewed = url_viewed;

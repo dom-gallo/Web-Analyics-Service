@@ -1,9 +1,8 @@
 package com.gallo.dom.analytics_server_dev.util;
 
-import com.gallo.dom.analytics_server_dev.model.PageViewRequest;
+import com.gallo.dom.analytics_server_dev.model.requests.PageViewRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 @Service

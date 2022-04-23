@@ -72,7 +72,11 @@ public class User implements UserDetails {
 
     public User() {
     }
-
+    public User(String emailAddress, String password){
+        this.emailAddress = emailAddress;
+        this.password = password;
+        this.created_at = LocalDateTime.now();
+    }
     public User(String emailAddress, String password, LocalDateTime created_at) {
         this.emailAddress = emailAddress;
         this.password = password;

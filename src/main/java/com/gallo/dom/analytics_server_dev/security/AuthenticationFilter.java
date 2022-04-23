@@ -32,7 +32,7 @@ import static com.gallo.dom.analytics_server_dev.security.SecurityConstants.KEY;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
+    private Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     private AuthenticationManager authenticationManager;
 
@@ -66,7 +66,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Date exp = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
         Key key = Keys.hmacShaKeyFor(KEY.getBytes());
         Claims claims = Jwts.claims().setSubject(((User) authResult.getPrincipal()).getUsername());
-        String token = Jwts.builder().setClaims(claims).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
+        String token = Jwts.builder().setClaims(claims).claim("TestClaim","HelloWorld").signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
         response.setHeader("token", token);
         logger.info("Token generated: " + token);
     }
