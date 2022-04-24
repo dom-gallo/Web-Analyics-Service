@@ -1,5 +1,10 @@
 package com.gallo.dom.analytics_server_dev.controller;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gallo.dom.analytics_server_dev.model.TestObject;
 import com.gallo.dom.analytics_server_dev.model.requests.AppUserRegisterRequest;
 import com.gallo.dom.analytics_server_dev.model.Domain;
 import com.gallo.dom.analytics_server_dev.model.User;
@@ -30,6 +35,8 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Admin function
+
     @GetMapping("")
     public ResponseEntity getUserByEmail(@RequestParam("email") String emailAddress){
         logger.info(String.format("REQUEST FOR USER WITH EMAIL: %S", emailAddress));
@@ -39,6 +46,7 @@ public class UserController {
 
         return new ResponseEntity(user, HttpStatus.OK);
     }
+
     @PostMapping("/signup")
     public void signUpUser(@RequestBody @NotNull AppUserRegisterRequest appUserRegisterRequest){
         logger.info("UserController received request to sign up a new user with emailAddress="+appUserRegisterRequest.getEmailAddress());
@@ -48,14 +56,15 @@ public class UserController {
     }
     /*
         Purpose: To provide all initial information to the web app for the currently logged in user
-
+        Role: AppUser
      */
     @GetMapping("/me")
-    public ResponseEntity getMe(HttpServletRequest request, Authentication auth){
-        // Pull the user emailAddress out of the security context authentication
-//        String lookingForEmailAddressHere = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        Claims lookingForEmailAddressHere = (Claims) auth.getName().toString();
-        logger.info(String.format("LOOKING FOR CURRENTLY LOGGED IN USER INFORMATION: %s", lookingForEmailAddressHere));
-        return new ResponseEntity(lookingForEmailAddressHere, HttpStatus.OK);
+    public ResponseEntity getMe(HttpServletRequest request, Authentication auth) throws JsonProcessingException {
+
+         Claims s = (Claims) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+         System.out.print(String.format("%s", s.getSubject()));
+         User user = userService.getUserByEmail(s.getSubject());
+
+        return new ResponseEntity(user,HttpStatus.OK);
     }
 }

@@ -55,7 +55,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
             Claims user = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes())).build().parseClaimsJws(token).getBody();
 
-            logger.info(String.format("user claims subject = ", user.getSubject()));
+            logger.info(String.format("user claims subject = %s", user.getSubject()));
 
             if(user != null){
                 return new UsernamePasswordAuthenticationToken(user,null, new ArrayList<>());
