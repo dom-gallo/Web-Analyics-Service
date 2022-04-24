@@ -58,8 +58,9 @@ public class UserController {
         Purpose: To provide all initial information to the web app for the currently logged in user
         Role: AppUser
      */
+
     @GetMapping("/me")
-    public ResponseEntity getMe(HttpServletRequest request, Authentication auth) throws JsonProcessingException {
+    public ResponseEntity getMe(Authentication auth) throws JsonProcessingException {
 
          Claims s = (Claims) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
          System.out.print(String.format("%s", s.getSubject()));
