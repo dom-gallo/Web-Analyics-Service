@@ -10,6 +10,7 @@ import com.gallo.dom.analytics_server_dev.model.Domain;
 import com.gallo.dom.analytics_server_dev.model.User;
 import com.gallo.dom.analytics_server_dev.repository.DomainRepository;
 import com.gallo.dom.analytics_server_dev.service.UserService;
+import com.gallo.dom.analytics_server_dev.util.AuthenticatedUserUtil;
 import io.jsonwebtoken.Claims;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -27,12 +28,14 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
+
     private final UserService userService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final AuthenticatedUserUtil authenticatedUserUtil;
 
-
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthenticatedUserUtil authenticatedUserUtil) {
         this.userService = userService;
+        this.authenticatedUserUtil = authenticatedUserUtil;
     }
 
     // Admin function
@@ -60,11 +63,14 @@ public class UserController {
      */
 
     @GetMapping("/me")
-    public ResponseEntity getMe(Authentication auth) throws JsonProcessingException {
+    public ResponseEntity getMe(HttpServletRequest request, Authentication auth) throws JsonProcessingException {
+//        Claims c = (Claims) auth.getPrincipal();
+//        logger.info(String.format("Claims c = ", c.getSubject()));
+//        Claims s = (Claims) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.print(String.format("%s", s.getSubject()));
 
-         Claims s = (Claims) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-         System.out.print(String.format("%s", s.getSubject()));
-         User user = userService.getUserByEmail(s.getSubject());
+        String authorizedUserEmailAddress = authenticatedUserUtil.getEmailFromContext(SecurityContextHolder.getContext().getAuthentication());
+        User user = userService.getUserByEmail(authorizedUserEmailAddress);
 
         return new ResponseEntity(user,HttpStatus.OK);
     }
