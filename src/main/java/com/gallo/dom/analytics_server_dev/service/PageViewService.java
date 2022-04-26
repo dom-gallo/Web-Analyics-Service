@@ -31,21 +31,6 @@ public class PageViewService {
         this.urlParser = urlParser;
     }
 
-//    public boolean addPageView(Long domainId, String url){
-//        logger.info("Looking for domain with id: " + domainId);
-//        Optional<Domain> domain = domainRepository.findById(domainId);
-//        if (domain.isEmpty()){
-//            logger.warn("User requested bad domain id: " + domainId);
-//            throw new BadRequestException("Cannot find domain with that ID");
-//        }
-//        logger.info("Adding pageview to domain with id: " + domainId);
-//        PageView pageView = new PageView(LocalDateTime.now(), url, domain.get());
-//        PageView savedPageView = pageViewRepository.save(pageView);
-//        if (savedPageView.getId().equals(null)) {
-//            throw new BadRequestException("Could not save pageview");
-//        }
-//        return true;
-//    }
 
     public List<PageView> getPageViewsForDomainId(Long domainId){
         logger.info("Looking for domain with id: " + domainId);

@@ -1,17 +1,10 @@
 package com.gallo.dom.analytics_server_dev.controller;
 
-import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gallo.dom.analytics_server_dev.model.TestObject;
-import com.gallo.dom.analytics_server_dev.model.requests.AppUserRegisterRequest;
-import com.gallo.dom.analytics_server_dev.model.Domain;
 import com.gallo.dom.analytics_server_dev.model.User;
-import com.gallo.dom.analytics_server_dev.repository.DomainRepository;
+import com.gallo.dom.analytics_server_dev.model.requests.AppUserRegisterRequest;
 import com.gallo.dom.analytics_server_dev.service.UserService;
 import com.gallo.dom.analytics_server_dev.util.AuthenticatedUserUtil;
-import io.jsonwebtoken.Claims;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 
 
 @RestController
@@ -58,7 +50,7 @@ public class UserController {
 
     }
     /*
-        Purpose: To provide all initial information to the web app for the currently logged in user
+        Purpose: To provide all initial information to the web app for the currently logged-in user
         Role: AppUser
      */
 

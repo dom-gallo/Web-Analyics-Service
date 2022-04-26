@@ -1,7 +1,6 @@
 package com.gallo.dom.analytics_server_dev.controller;
 
 import com.gallo.dom.analytics_server_dev.model.PageView;
-import com.gallo.dom.analytics_server_dev.model.requests.PageViewRequest;
 import com.gallo.dom.analytics_server_dev.service.DomainService;
 import com.gallo.dom.analytics_server_dev.service.PageViewService;
 import com.gallo.dom.analytics_server_dev.util.UrlParseService;
@@ -52,8 +51,6 @@ public class PageViewController {
     public ResponseEntity addPageViewWithURL(@RequestParam("url") String url){
         logger.info("New page view for URL: " + url);
 
-//        PageViewRequest pvr = urlParser.parseURL(url);
-//        logger.info(pvr.toString());
         PageView o = pageViewService.addPageView(url);
         return new ResponseEntity(o,HttpStatus.OK);
     }
