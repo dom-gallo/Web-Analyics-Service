@@ -1,4 +1,4 @@
-package com.gallo.dom.analytics_server_dev.model;
+package com.gallo.dom.analytics_server_dev.model.requests;
 
 import java.time.LocalDateTime;
 

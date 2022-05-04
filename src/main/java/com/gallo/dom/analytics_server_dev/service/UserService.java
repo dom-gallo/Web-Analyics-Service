@@ -1,11 +1,14 @@
 package com.gallo.dom.analytics_server_dev.service;
 
 import com.gallo.dom.analytics_server_dev.exception.NotFoundException;
+import com.gallo.dom.analytics_server_dev.model.Domain;
 import com.gallo.dom.analytics_server_dev.model.User;
+import com.gallo.dom.analytics_server_dev.model.requests.AppUserRegisterRequest;
 import com.gallo.dom.analytics_server_dev.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,10 +20,15 @@ public class UserService {
     private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
+    private DomainService domainService;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,DomainService domainService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.domainService = domainService;
+        this.passwordEncoder = passwordEncoder;
+
     }
 
     public User getUserByEmail(String emailAddress){
@@ -33,8 +41,14 @@ public class UserService {
         return userOptional.get();
     }
 
-    public User addNewUser(User user){
-        user.setCreated_at(LocalDateTime.now());
-        return userRepository.save(user);
+    public User addNewUser(AppUserRegisterRequest appUser){
+        User user = new User(appUser.getEmailAddress(), passwordEncoder.encode(appUser.getPassword()), LocalDateTime.now());
+        logger.info("Saving user to database with emailAddress="+user.getEmailAddress());
+        User savedUser = userRepository.save(user);
+        Domain d = new Domain(appUser.getDomainBase(), savedUser);
+        Domain dD = domainService.save(d);
+        savedUser.setDomain(dD);
+        userRepository.save(savedUser);
+        return savedUser;
     }
 }

@@ -1,5 +1,6 @@
 package com.gallo.dom.analytics_server_dev.security;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,17 +21,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     private ApplicationUserDetailsService userDetailsService;
-    private TestPasswordEncoder testPasswordEncoder;
+//    private TestPasswordEncoder testPasswordEncoder;
+    private PasswordEncoder passwordCrypto;
 
     @Autowired
-    public SecurityConfiguration(ApplicationUserDetailsService userDetailsService, TestPasswordEncoder  testPasswordEncoder) {
+    public SecurityConfiguration(ApplicationUserDetailsService userDetailsService, PasswordEncoder passwordCrypto) {
         this.userDetailsService = userDetailsService;
-        this.testPasswordEncoder = testPasswordEncoder;
+        this.passwordCrypto = passwordCrypto;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.cors()
+                .configurationSource(corsConfigurationSource())
+                .and().csrf().disable()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL, "/login").permitAll()
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/js/**").permitAll()
@@ -41,15 +47,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new AuthenticationFilter(authenticationManager()))
                 .addFilter(new AuthorizationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
         return source;
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("*"));
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+//        configuration.setAllowedHeaders(Arrays.asList("token", "Access-Control-Allow-Origin"));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
     }
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(testPasswordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordCrypto);
     }
 }

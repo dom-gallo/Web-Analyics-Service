@@ -23,6 +23,7 @@ import static com.gallo.dom.analytics_server_dev.security.SecurityConstants.KEY;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
     Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
+
     public AuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -40,6 +41,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         }
         logger.info("doFilterInternal called, trying to get authenticationtoken");
         UsernamePasswordAuthenticationToken authentication = authenticate(request);
+        logger.info(String.format("AuthorizationFilter::doFilterInternal --- AuthenticationToken = %s", authentication.getPrincipal()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request,response);
     }
@@ -52,6 +54,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         if (token != null){
 
             Claims user = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes())).build().parseClaimsJws(token).getBody();
+
+            logger.info(String.format("user claims subject = %s", user.getSubject()));
 
             if(user != null){
                 return new UsernamePasswordAuthenticationToken(user,null, new ArrayList<>());

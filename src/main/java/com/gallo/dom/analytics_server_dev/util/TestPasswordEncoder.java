@@ -1,4 +1,4 @@
-package com.gallo.dom.analytics_server_dev.security;
+package com.gallo.dom.analytics_server_dev.util;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

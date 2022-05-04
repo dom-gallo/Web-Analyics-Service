@@ -39,7 +39,7 @@ public class Domain {
     )
     private User user;
 
-    @OneToMany(mappedBy = "domain")
+    @OneToMany(mappedBy = "domain", cascade = CascadeType.ALL)
     private List<PageView> pageViewList;
 
     public Domain() {

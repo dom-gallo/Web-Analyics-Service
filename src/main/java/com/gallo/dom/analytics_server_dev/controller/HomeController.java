@@ -16,6 +16,7 @@ import javax.swing.text.html.HTMLDocument;
 @RestController
 @RequestMapping(path = "/")
 public class HomeController {
+
     private final ApplicationUserDetailsService appUserDetailsService;
 
     @Autowired
@@ -25,7 +26,6 @@ public class HomeController {
 
     @GetMapping(path = {"/", "/home"})
     public String getHome(){
-
         return "index";
     }
 }
