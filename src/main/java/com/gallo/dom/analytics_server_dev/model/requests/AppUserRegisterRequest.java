@@ -4,13 +4,15 @@ public class AppUserRegisterRequest {
     String emailAddress;
     String domainBase;
     String password;
+    String passwordConfirm;
 
     public AppUserRegisterRequest(){}
 
-    public AppUserRegisterRequest(String emailAddress, String domainBase, String password) {
+    public AppUserRegisterRequest(String emailAddress, String domainBase, String password, String passwordConfirm) {
         this.emailAddress = emailAddress;
         this.domainBase = domainBase;
         this.password = password;
+        this.passwordConfirm = passwordConfirm;
     }
 
     public String getEmailAddress() {
@@ -37,12 +39,21 @@ public class AppUserRegisterRequest {
         this.password = password;
     }
 
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
     @Override
     public String toString() {
         return "AppUserRegisterRequest{" +
                 "emailAddress='" + emailAddress + '\'' +
                 ", domainBase='" + domainBase + '\'' +
                 ", password='" + password + '\'' +
+                ", passwordConfirm='" + passwordConfirm + '\'' +
                 '}';
     }
 }
