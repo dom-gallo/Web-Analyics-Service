@@ -8,7 +8,6 @@ import com.gallo.dom.analytics_server_dev.model.User;
 import com.gallo.dom.analytics_server_dev.model.requests.PageViewRequest;
 import com.gallo.dom.analytics_server_dev.repository.DomainRepository;
 import com.gallo.dom.analytics_server_dev.repository.PageViewRepository;
-import com.gallo.dom.analytics_server_dev.util.IURLParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
