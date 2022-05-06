@@ -4,6 +4,7 @@ import com.gallo.dom.analytics_server_dev.exception.BadRequestException;
 import com.gallo.dom.analytics_server_dev.exception.NotFoundException;
 import com.gallo.dom.analytics_server_dev.model.Domain;
 import com.gallo.dom.analytics_server_dev.model.PageView;
+import com.gallo.dom.analytics_server_dev.model.User;
 import com.gallo.dom.analytics_server_dev.model.requests.PageViewRequest;
 import com.gallo.dom.analytics_server_dev.repository.DomainRepository;
 import com.gallo.dom.analytics_server_dev.repository.PageViewRepository;
@@ -18,19 +19,28 @@ import java.util.Optional;
 
 @Service
 public class PageViewService {
-    Logger logger = LoggerFactory.getLogger(PageViewService.class);
+    private Logger logger = LoggerFactory.getLogger(PageViewService.class);
 
-    PageViewRepository pageViewRepository;
-    DomainRepository domainRepository;
-    IURLParser urlParser;
-
+    private PageViewRepository pageViewRepository;
+    private DomainRepository domainRepository;
+    private IURLParser urlParser;
+    private UserService userService;
     @Autowired
-    public PageViewService(PageViewRepository pageViewRepository, DomainRepository domainRepository, IURLParser urlParser) {
+    public PageViewService(PageViewRepository pageViewRepository, DomainRepository domainRepository, IURLParser urlParser,
+                           UserService userService) {
         this.pageViewRepository = pageViewRepository;
         this.domainRepository = domainRepository;
         this.urlParser = urlParser;
+        this.userService = userService;
     }
-
+    public List<PageView> getPageViewsForEmail(String emailAddress){
+        User userFromEmail = userService.getUserByEmail(emailAddress);
+        Domain domain = userFromEmail.getDomain();
+        Long domainId = domain.getId();
+        logger.info(String.format("Getting pageviews for user with email = %s and domain = %s", emailAddress, domain.getDomainBase()));
+        List<PageView> pageViews = pageViewRepository.getPageViewForDomainId(domainId);
+        return pageViews;
+    }
 
     public List<PageView> getPageViewsForDomainId(Long domainId){
         logger.info("Looking for domain with id: " + domainId);

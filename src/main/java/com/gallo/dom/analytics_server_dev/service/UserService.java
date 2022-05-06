@@ -40,11 +40,13 @@ public class UserService {
         logger.info("Found user with emailAddress = " + emailAddress);
         return userOptional.get();
     }
-
+    //TODO: check for already existing users
     public User addNewUser(AppUserRegisterRequest appUser){
+
         User user = new User(appUser.getEmailAddress(), passwordEncoder.encode(appUser.getPassword()), LocalDateTime.now());
         logger.info("Saving user to database with emailAddress="+user.getEmailAddress());
         User savedUser = userRepository.save(user);
+        logger.info(String.format("Adding domain base = %s for new user with email =%s", appUser.getDomainBase(), appUser.getEmailAddress()));
         Domain d = new Domain(appUser.getDomainBase(), savedUser);
         Domain dD = domainService.save(d);
         savedUser.setDomain(dD);

@@ -42,7 +42,7 @@ public class UserController {
         return new ResponseEntity(user, HttpStatus.OK);
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public void signUpUser(@RequestBody @NotNull AppUserRegisterRequest appUserRegisterRequest){
         logger.info("UserController received request to sign up a new user with emailAddress="+appUserRegisterRequest.getEmailAddress());
 
@@ -55,7 +55,7 @@ public class UserController {
      */
 
     @GetMapping("/me")
-    public ResponseEntity getMe(HttpServletRequest request, Authentication auth) throws JsonProcessingException {
+    public ResponseEntity getMe() throws JsonProcessingException {
 //        Claims c = (Claims) auth.getPrincipal();
 //        logger.info(String.format("Claims c = ", c.getSubject()));
 //        Claims s = (Claims) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
