@@ -43,11 +43,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void signUpUser(@RequestBody @NotNull AppUserRegisterRequest appUserRegisterRequest){
+    public ResponseEntity signUpUser(@RequestBody @NotNull AppUserRegisterRequest appUserRegisterRequest){
         logger.info("UserController received request to sign up a new user with emailAddress="+appUserRegisterRequest.getEmailAddress());
 
         User savedUser = userService.addNewUser(appUserRegisterRequest);
-
+        return new ResponseEntity(savedUser, HttpStatus.OK);
     }
     /*
         Purpose: To provide all initial information to the web app for the currently logged-in user
