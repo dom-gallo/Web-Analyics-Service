@@ -1,4 +1,4 @@
-package com.gallo.dom.analytics_server_dev.util;
+package com.gallo.dom.analytics_server_dev.service;
 
 import com.gallo.dom.analytics_server_dev.model.requests.PageViewRequest;
 

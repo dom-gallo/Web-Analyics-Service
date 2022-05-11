@@ -50,6 +50,7 @@ public class UserController {
         }
         User savedUser = userService.addNewUser(appUserRegisterRequest);
 
+
         return new ResponseEntity("message: User successfully created", HttpStatus.OK);
     }
     /*
@@ -58,7 +59,7 @@ public class UserController {
      */
 
     @GetMapping("/me")
-    public ResponseEntity getMe(HttpServletRequest request, Authentication auth) throws JsonProcessingException {
+    public ResponseEntity getMe() throws JsonProcessingException {
 //        Claims c = (Claims) auth.getPrincipal();
 //        logger.info(String.format("Claims c = ", c.getSubject()));
 //        Claims s = (Claims) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
