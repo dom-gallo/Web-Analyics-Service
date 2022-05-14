@@ -45,9 +45,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity signUpUser(@RequestBody @NotNull AppUserRegisterRequest appUserRegisterRequest){
         logger.info("UserController received request to sign up a new user with emailAddress="+appUserRegisterRequest.getEmailAddress());
-
+        if(appUserRegisterRequest.getEmailAddress() == appUserRegisterRequest.getPasswordConfirm()){
+            return new ResponseEntity("Passwords do not match", HttpStatus.BAD_REQUEST);
+        }
         User savedUser = userService.addNewUser(appUserRegisterRequest);
-        return new ResponseEntity(savedUser, HttpStatus.OK);
+
+
+        return new ResponseEntity("message: User successfully created", HttpStatus.OK);
     }
     /*
         Purpose: To provide all initial information to the web app for the currently logged-in user
