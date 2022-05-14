@@ -1,0 +1,8 @@
+{
+  "name": "web-analytics-backend",
+  "buildpacks": [
+    {
+      "url": "heroku/gradle"
+    }
+  ]
+}
