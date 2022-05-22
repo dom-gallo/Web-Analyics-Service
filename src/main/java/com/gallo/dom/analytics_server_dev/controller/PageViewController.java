@@ -35,16 +35,6 @@ public class PageViewController {
         this.authenticatedUserUtil = authenticatedUserUtil;
     }
 
-
-    /*
-          Usage: /api/v1/pageview?domainId={domainId}
-          Purpose: To retrieve all pageviews for the given domainId
-     */
-//    @GetMapping("/all")
-//    public ResponseEntity getPageViewsForDomainId(@RequestParam("domainId") Long domainId){
-//        List<PageView> pageViews = pageViewService.getPageViewsForDomainId(domainId);
-//        return new ResponseEntity(pageViews, HttpStatus.OK);
-//    }
     @GetMapping("/all")
     public ResponseEntity<List<PageView>> getPageViews(){
         String authorizedUserEmail = authenticatedUserUtil.getEmailFromContext(SecurityContextHolder.getContext().getAuthentication());

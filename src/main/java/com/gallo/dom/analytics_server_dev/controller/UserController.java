@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gallo.dom.analytics_server_dev.model.User;
 import com.gallo.dom.analytics_server_dev.model.requests.AppUserRegisterRequest;
 import com.gallo.dom.analytics_server_dev.service.UserService;
+import com.gallo.dom.analytics_server_dev.util.ApiResponseHandler;
 import com.gallo.dom.analytics_server_dev.util.AuthenticatedUserUtil;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -25,7 +26,9 @@ public class UserController {
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final AuthenticatedUserUtil authenticatedUserUtil;
 
-    public UserController(UserService userService, AuthenticatedUserUtil authenticatedUserUtil) {
+
+    public UserController(UserService userService, AuthenticatedUserUtil authenticatedUserUtil)
+    {
         this.userService = userService;
         this.authenticatedUserUtil = authenticatedUserUtil;
     }
@@ -33,19 +36,28 @@ public class UserController {
     // Admin function
 
     @GetMapping("")
-    public ResponseEntity getUserByEmail(@RequestParam("email") String emailAddress){
+    public ResponseEntity getUserByEmail(@RequestParam("email") String emailAddress)
+    {
         logger.info(String.format("REQUEST FOR USER WITH EMAIL: %S", emailAddress));
+        try
+        {
+            User user = userService.getUserByEmail(emailAddress);
+            logger.info(String.format("USER FOUND FOR EMAIL %s, ", emailAddress));
+            logger.info(user.toString());
+            return ApiResponseHandler.generateResponse("User found.", HttpStatus.OK, user);
+        } catch (Exception e)
+        {
+            return ApiResponseHandler.generateResponse("Unknown exception occured.", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
 
-        User user = userService.getUserByEmail(emailAddress);
-        System.out.println(user);
-
-        return new ResponseEntity(user, HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity signUpUser(@RequestBody @NotNull AppUserRegisterRequest appUserRegisterRequest){
+    public ResponseEntity signUpUser(@RequestBody @NotNull AppUserRegisterRequest appUserRegisterRequest)
+    {
         logger.info("UserController received request to sign up a new user with emailAddress="+appUserRegisterRequest.getEmailAddress());
-        if(appUserRegisterRequest.getEmailAddress() == appUserRegisterRequest.getPasswordConfirm()){
+        if(appUserRegisterRequest.getPassword().equals(appUserRegisterRequest.getPasswordConfirm()))
+        {
             return new ResponseEntity("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
         User savedUser = userService.addNewUser(appUserRegisterRequest);
